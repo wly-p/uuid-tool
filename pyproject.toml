@@ -1,7 +1,7 @@
 [project]
 name = "uuid-tool"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.1.1"
+description = "UUID generator and validator"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
@@ -11,5 +11,6 @@ uuid-tool = "uuid_tool:main"
 
 [dependency-groups]
 dev = [
-    "pytest>=9.0.2",
+    "pytest~=9.0",
+    "ruff~=0.15",
 ]

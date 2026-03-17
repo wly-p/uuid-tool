@@ -24,6 +24,7 @@ class _Prog:
     DESC = "UUID generator and validator"
     CMD_DEST = "command"
     GUI_FLAG = "--gui"
+    GUI_FLAG_SHORT = "-g"
     GUI_HELP = "Launch the graphical interface"
 
 
@@ -67,7 +68,7 @@ def _cmd_validate(args: argparse.Namespace) -> None:
 
 def run() -> None:
     parser = argparse.ArgumentParser(prog=_Prog.NAME, description=_Prog.DESC)
-    parser.add_argument(_Prog.GUI_FLAG, action="store_true", help=_Prog.GUI_HELP)
+    parser.add_argument(_Prog.GUI_FLAG, _Prog.GUI_FLAG_SHORT, action="store_true", help=_Prog.GUI_HELP)
     sub = parser.add_subparsers(dest=_Prog.CMD_DEST)
 
     gen = sub.add_parser(_Cmd.GENERATE, aliases=_CMD_ALIASES[_Cmd.GENERATE], help=_GenArgs.HELP)
