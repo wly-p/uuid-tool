@@ -3,7 +3,7 @@ import pytest
 from uuid_tool.core import UUIDType, ValidationResult, generate, validate
 
 UUID_RE = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
     re.IGNORECASE,
 )
 
@@ -23,6 +23,9 @@ class TestUUIDType:
         ("1",  UUIDType.V1),
         ("v4", UUIDType.V4),
         ("4",  UUIDType.V4),
+        ("v6", UUIDType.V6),
+        ("v7", UUIDType.V7),
+        ("v8", UUIDType.V8),
     ])
     def test_from_version(self, version, expected):
         assert UUIDType.from_version(version) is expected
@@ -38,6 +41,9 @@ class TestUUIDType:
         labels = UUIDType.labels()
         assert len(labels) == len(UUIDType)
         assert "UUID v4 (Random)" in labels
+        assert "UUID v6 (Time-reordered)" in labels
+        assert "UUID v7 (Unix Epoch)" in labels
+        assert "UUID v8 (Custom)" in labels
 
 
 class TestGenerate:
@@ -61,6 +67,7 @@ class TestGenerate:
 class TestValidate:
     VALID_V4 = "550e8400-e29b-41d4-a716-446655440000"
     VALID_V1 = "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+    VALID_V7 = "01956fac-b4b3-7c1b-9ae2-8a32e58de2c5"
 
     def test_valid_uuid(self):
         results = validate([self.VALID_V4])
@@ -81,6 +88,11 @@ class TestValidate:
     def test_empty_lines_skipped(self):
         results = validate(["", "  ", self.VALID_V4])
         assert len(results) == 1
+
+    def test_valid_v7_uuid(self):
+        results = validate([self.VALID_V7])
+        assert results[0].valid is True
+        assert results[0].version == 7
 
     def test_mixed_valid_invalid(self):
         results = validate([self.VALID_V4, "bad", self.VALID_V1])

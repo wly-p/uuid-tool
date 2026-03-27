@@ -9,6 +9,9 @@ class UUIDType(Enum):
     V3 = ("UUID v3 (MD5 Namespace)", lambda: uuid.uuid3(uuid.NAMESPACE_DNS, str(uuid.uuid4())))
     V4 = ("UUID v4 (Random)", lambda: uuid.uuid4())
     V5 = ("UUID v5 (SHA-1 Namespace)", lambda: uuid.uuid5(uuid.NAMESPACE_DNS, str(uuid.uuid4())))
+    V6 = ("UUID v6 (Time-reordered)", lambda: uuid.uuid6())
+    V7 = ("UUID v7 (Unix Epoch)", lambda: uuid.uuid7())
+    V8 = ("UUID v8 (Custom)", lambda: uuid.uuid8())
 
     def __init__(self, label: str, factory):
         self.label = label
@@ -36,11 +39,11 @@ class UUIDType(Enum):
 
 
 _UUID_RE = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
     re.IGNORECASE,
 )
 _VERSION_RE = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-([1-5])[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-([1-8])[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
     re.IGNORECASE,
 )
 
